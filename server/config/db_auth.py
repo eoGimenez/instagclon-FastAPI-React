@@ -42,7 +42,7 @@ def authenticate_user(username:str, password:str, db: Session):
         return False
     return user
 
-def create_access_token(settings: Settings, data: dict, expires_delta: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_enconde = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta

@@ -13,7 +13,7 @@ def post_user(db: Session, request: UserBase):
     )
     user = db.query(DbUser).filter(or_(DbUser.email == request.email, DbUser.username == request.username)).first()
     if user:
-        HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='This username or email already exists.')
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='This username or email already exists.')
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
