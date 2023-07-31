@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException, Security, status
 from typing_extensions import Annotated
-from enviroment import config_env, envirom
+from typing import Optional
+from enviroment.config import Settings, get_settings
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from fastapi.security import (
@@ -15,7 +16,7 @@ from schemas.user import UserBase
 from schemas.token import TokenData
 from config.database import get_db
 
-
+dotenv : Settings = get_settings()
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -41,19 +42,18 @@ def authenticate_user(username:str, password:str, db: Session):
         return False
     return user
 
-def create_access_token(settings: Annotated[config_env.Settings, Depends(envirom.get_settings)], data: dict, expires_delta: timedelta | None = None):
+def create_access_token(settings: Settings, data: dict, expires_delta: timedelta | None = None):
     to_enconde = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_enconde.update({'exp': expire})
-    encode_jwt = jwt.encode(to_enconde, settings.secret_key, algorithm=settings.algorithm)
+    encode_jwt = jwt.encode(to_enconde, dotenv.secret_key, algorithm=dotenv.algorithm)
     return encode_jwt
     
 
 async def get_current_user(
-         settings: Annotated[config_env.Settings, Depends(envirom.get_settings)],
          security_scoper: SecurityScopes, 
          token: Annotated[str, Depends(oauth2_scheme)],
          db: Session = Depends(get_db)
@@ -68,7 +68,7 @@ async def get_current_user(
         headers={'WWW-Authenticate': authenticate_value}
     )
     try:
-        payload = jwt.encode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(token, dotenv.secret_key, algorithms=[dotenv.algorithm])
         username: str = payload.get('sub')
         if username is None:
             raise credentials_exception
@@ -86,11 +86,11 @@ async def get_current_user(
                 detail='Not enought permissions',
                 headers={'WWW-Authenticate': authenticate_value},
             )
-        return user
+    return user
     
-    async def get_current_active_user(
-            current_user: Annotated[UserBase, Security(get_current_user, scopes=['me'])]
+async def get_current_active_user(
+        current_user: Annotated[UserBase, Security(get_current_user, scopes=['me'])]
     ):
-        if not current_user.active:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Inactive user')
-        return current_user
+    # if not current_user.active:
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Inactive user')
+    return current_user

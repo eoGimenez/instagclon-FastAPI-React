@@ -6,6 +6,6 @@ class UserBase(BaseModel):
     password:str
     
 
-class UserDisplat(BaseModel):
+class UserDisplay(BaseModel):
     username: str
     email:str
