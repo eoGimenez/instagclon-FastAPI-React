@@ -8,3 +8,4 @@ class DbUser(Base):
     username = Column(String)
     email = Column(String)
     password = Column(String)
+    active = Column(Boolean)

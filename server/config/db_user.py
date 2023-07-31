@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm.session import Session
 from sqlalchemy import or_
 from schemas.user import UserBase
 from models.models import DbUser
@@ -10,6 +10,7 @@ def post_user(db: Session, request: UserBase):
         username=request.username,
         email=request.email,
         password=get_password_hashed(request.password),
+        active=True
     )
     user = db.query(DbUser).filter(or_(DbUser.email == request.email, DbUser.username == request.username)).first()
     if user:

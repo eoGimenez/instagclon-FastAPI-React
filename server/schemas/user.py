@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing_extensions import Annotated
 
 class UserBase(BaseModel):
     username: str
@@ -7,5 +8,6 @@ class UserBase(BaseModel):
     
 
 class UserDisplay(BaseModel):
+    id: int
     username: str
     email:str

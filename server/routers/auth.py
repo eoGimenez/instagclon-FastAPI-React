@@ -5,7 +5,7 @@ from schemas.user import UserBase, UserDisplay
 from schemas.token import Token
 from config.database import get_db
 from config import db_auth
-from sqlalchemy.orm import Session
+from sqlalchemy.orm.session import Session
 from fastapi.security import (
     OAuth2PasswordRequestForm
 )

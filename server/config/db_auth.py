@@ -3,7 +3,7 @@ from typing_extensions import Annotated
 from typing import Optional
 from enviroment.config import Settings, get_settings
 from datetime import datetime, timedelta
-from sqlalchemy.orm import Session
+from sqlalchemy.orm.session import Session
 from fastapi.security import (
     OAuth2PasswordBearer,
     SecurityScopes
@@ -91,6 +91,6 @@ async def get_current_user(
 async def get_current_active_user(
         current_user: Annotated[UserBase, Security(get_current_user, scopes=['me'])]
     ):
-    # if not current_user.active:
-    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Inactive user')
+    if not current_user.active:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Inactive user')
     return current_user
