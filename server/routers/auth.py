@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from typing_extensions import Annotated
-from enviroment import config_env, envirom
+from enviroment.config import Settings, get_settings
 
 
 
@@ -10,5 +10,5 @@ router = APIRouter(
 )
 
 @router.get('/')
-def setting(settings: Annotated[config_env.Settings, Depends(envirom.get_settings)]):
+def setting(settings: Annotated[Settings, Depends(get_settings)]):
     return settings
