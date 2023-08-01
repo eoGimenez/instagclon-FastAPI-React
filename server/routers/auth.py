@@ -32,7 +32,7 @@ async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db),
 ):
-    user: UserBase = db_auth.authenticate_user(
+    user = db_auth.authenticate_user(
         form_data.username, form_data.password, db
     )
     if not user:
@@ -44,7 +44,12 @@ async def login_for_access_token(
     )
     return {
         'access_token': access_token,
-        'token_type': 'bearer'
+        'token_type': 'bearer',
+        'user': {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email
+        }
     }
 
 

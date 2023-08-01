@@ -12,7 +12,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from models.models import DbUser
 from pydantic import ValidationError
-from schemas.user import UserBase
+from schemas.user import UserBase, UserToken
 from schemas.token import TokenData
 from config.database import get_db
 
@@ -36,7 +36,6 @@ def get_password_hashed(password):
 def authenticate_user(username:str, password:str, db: Session):
     user = db.query(DbUser).filter(DbUser.username == username).first()
     if not user:
-        # raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Invalid credentials')
         return False
     if not verify_password(password, user.password):
         return False
@@ -83,13 +82,13 @@ async def get_current_user(
         if scope not in token_data.scopes:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail='Not enought permissions',
+                detail='No tienes acceso a esta función',
                 headers={'WWW-Authenticate': authenticate_value},
             )
     return user
     
 async def get_current_active_user(
-        current_user: Annotated[UserBase, Security(get_current_user, scopes=['me'])]
+        current_user: Annotated[UserToken, Security(get_current_user, scopes=['me'])]
     ):
     if not current_user.active:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Inactive user')

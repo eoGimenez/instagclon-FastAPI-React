@@ -30,6 +30,10 @@ async def upload_file(image: UploadFile = File(...), token: TokenData = Security
         'url': upload_result['secure_url']
     }
 
+@router.get('/{id}', response_model=PostDisplay)
+async def get_post(id: int, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
+    return db_post.get_post_byt_id(db, id)
+
 @router.delete('/{id}')
 async def delete_post(id: int, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
-    return db_post.delete_post(db, id)
+    return db_post.delete_post(db, id, token.id)
