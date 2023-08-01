@@ -13,6 +13,7 @@ python-multipart = "*"
 python-jose = "*"
 passlib = "*"
 bcrypt = "*"
+cloudinary = "*"
 
 [dev-packages]
 
