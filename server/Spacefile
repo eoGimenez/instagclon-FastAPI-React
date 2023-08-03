@@ -1,0 +1,13 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+    - name: server
+      src: ./
+      engine: python3.9
+      primary: true
+      run: uvicorn main:app
+      presets:
+          env:
+              - name: ORIGIN
+              - name: SECRET_KEY
+              - name: ALGORITHM

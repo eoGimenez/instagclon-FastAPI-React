@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Annotated
 from schemas.user import UserDisplay
 
 class Token(BaseModel):
@@ -9,6 +9,6 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    id: int | None = None
-    usernam: str | None = None
+    id: Annotated[int, None]
+    usernam: Annotated[str, None]
     scopes: List[str] = []

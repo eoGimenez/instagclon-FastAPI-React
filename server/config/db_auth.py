@@ -48,7 +48,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_enconde.update({'exp': expire})
-    encode_jwt = jwt.encode(to_enconde, dotenv.secret_key, algorithm=dotenv.algorithm)
+    encode_jwt = jwt.encode(to_enconde, dotenv.SECRET_KEY, algorithm=dotenv.ALGORITHM)
     return encode_jwt
     
 
@@ -67,12 +67,14 @@ async def get_current_user(
         headers={'WWW-Authenticate': authenticate_value}
     )
     try:
-        payload = jwt.decode(token, dotenv.secret_key, algorithms=[dotenv.algorithm])
+        payload = jwt.decode(token, dotenv.SECRET_KEY, algorithms=[dotenv.ALGORITHM])
         username: str = payload.get('sub')
+        id: int = payload.get('id')
         if username is None:
             raise credentials_exception
         token_scopes = payload.get('scopes', [])
-        token_data = TokenData(scopes=token_scopes, usernam=username)
+        token_data = TokenData(id= id, scopes=token_scopes, usernam=username)
+        print('aca')
     except ( JWTError, ValidationError):
         raise credentials_exception
     user = db.query(DbUser).filter(DbUser.username == username).first()
