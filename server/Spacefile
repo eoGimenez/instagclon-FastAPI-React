@@ -11,3 +11,6 @@ micros:
               - name: ORIGIN
               - name: SECRET_KEY
               - name: ALGORITHM
+              - name: CLOUDNAME
+              - name: CLOUDKEY
+              - name: CLOUDSECRET
