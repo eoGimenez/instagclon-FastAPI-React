@@ -7,6 +7,7 @@ class CommentBase(BaseModel):
     post_id: int
 
 class CommentDisplay(BaseModel):
+    id: int
     text: str
     username: str
     timestamp: datetime
