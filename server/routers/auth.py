@@ -48,7 +48,8 @@ async def login_for_access_token(
         'user': {
             "id": user.id,
             "username": user.username,
-            "email": user.email
+            "email": user.email,
+            "avatar": user.avatar
         }
     }
 

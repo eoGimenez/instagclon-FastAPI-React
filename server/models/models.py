@@ -11,6 +11,7 @@ class DbUser(Base):
     email = Column(String)
     password = Column(String)
     active = Column(Boolean)
+    avatar = Column(String)
     items = relationship('DbPost', back_populates='author')
 
 class DbPost(Base):

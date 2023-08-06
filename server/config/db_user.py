@@ -6,10 +6,13 @@ from fastapi import HTTPException, status
 from config.db_auth import get_password_hashed
 
 def post_user(db: Session, request: UserBase):
+    if (not request.avatar) :
+        request.avatar = 'https://res.cloudinary.com/dbld4vcec/image/upload/v1687022931/localartco/cqirs7fl0ulyznvbniuy.jpg'
     new_user = DbUser (
         username=request.username,
         email=request.email,
         password=get_password_hashed(request.password),
+        avatar=request.avatar,
         active=True
     )
     user = db.query(DbUser).filter(or_(DbUser.email == request.email, DbUser.username == request.username)).first()
