@@ -74,7 +74,6 @@ async def get_current_user(
             raise credentials_exception
         token_scopes = payload.get('scopes', [])
         token_data = TokenData(id= id, scopes=token_scopes, usernam=username)
-        print('aca')
     except ( JWTError, ValidationError):
         raise credentials_exception
     user = db.query(DbUser).filter(DbUser.username == username).first()

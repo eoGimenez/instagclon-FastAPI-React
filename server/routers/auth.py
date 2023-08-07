@@ -32,6 +32,7 @@ async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db),
 ):
+    scopes = form_data.scopes[0].split(',') if form_data.scopes else []
     user = db_auth.authenticate_user(
         form_data.username, form_data.password, db
     )
@@ -39,7 +40,7 @@ async def login_for_access_token(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid credentials')
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = db_auth.create_access_token(
-        data={'sub': user.username, 'scopes': form_data.scopes, 'id': user.id},
+        data={'sub': user.username, 'scopes': scopes, 'id': user.id},
         expires_delta=access_token_expires
     )
     return {
