@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing_extensions import Annotated
 from datetime import timedelta
-from schemas.user import UserBase, UserDisplay
+from schemas.user import UserBase, UserDisplay, UserSignUp
 from schemas.token import Token
 from config.database import get_db
 from config import db_auth
@@ -19,8 +19,8 @@ router = APIRouter(
     tags=['Authentication']
 )
 
-@router.post('/signup')
-async def create_user(request: UserBase, db: Session = Depends(get_db)):
+@router.post('/signup', response_model=UserDisplay)
+async def create_user(request: UserSignUp, db: Session = Depends(get_db)):
     return post_user(db, request)
 
 @router.get('/{id}', response_model=UserDisplay)
