@@ -1,11 +1,13 @@
 from sqlalchemy.orm.session import Session
 from sqlalchemy import or_
-from schemas.user import UserBase
+from schemas.user import UserSignUp
 from models.models import DbUser
 from fastapi import HTTPException, status
 from config.db_auth import get_password_hashed
 
-def post_user(db: Session, request: UserBase):
+def post_user(db: Session, request: UserSignUp):
+    if (request.password != request.re_password) :
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='La contraseña y la confirmación de contraseña, no coinciden !.')
     if (not request.avatar) :
         request.avatar = 'https://res.cloudinary.com/dbld4vcec/image/upload/v1687022931/localartco/cqirs7fl0ulyznvbniuy.jpg'
     new_user = DbUser (
