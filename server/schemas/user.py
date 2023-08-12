@@ -26,6 +26,7 @@ class UserDisplay(BaseModel):
 
 
 class User(BaseModel):
+    id: int
     username: str
     avatar: str
     class Config():
