@@ -19,7 +19,7 @@ def post_post(db: Session, request: PostBase):
 def get_all_post(db: Session):
     return db.query(DbPost).all()
 
-def get_post_byt_id(db: Session, id:int):
+def get_post_by_id(db: Session, id:int):
     return db.query(DbPost).filter(DbPost.id == id).first()
 
 def delete_post(db: Session, id: int, user_id: int):

@@ -32,3 +32,14 @@ class DbComment(Base):
     timestamp = Column(DateTime)
     post_id = Column(Integer, ForeignKey('posts.id'))
     post = relationship('DbPost', back_populates='comments')
+    responses = relationship('DbResponse', back_populates='comment')
+
+class DbResponse(Base):
+    __tablename__= 'responses'
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String)
+    username = Column(String)
+    edited = Column(Boolean)
+    timestamp = Column(DateTime)
+    comment_id = Column(Integer, ForeignKey('comments.id'))
+    comment = relationship('DbComment', back_populates='responses')
