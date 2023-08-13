@@ -29,12 +29,17 @@ def update_response(db:Session, id: int, request: ResponseBase):
     db.commit()
     return 'Respuesta actualizada'
 
-def delete_response(db: Session, id: int):
+def delete_response(db: Session, id: int, user_id: int):
     response = db.query(DbResponse).filter(DbResponse.id == id)
     if not response.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                             detail='Esa respuesta no existe'
                             )
+    if response.user_id != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='Las respuestas solo pueden ser eliminadas por los creadores!'
+        )
     db.delete(response)
     db.commit()
     return 'Respuesta eliminada'

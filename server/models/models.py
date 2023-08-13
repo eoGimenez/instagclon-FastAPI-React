@@ -13,6 +13,8 @@ class DbUser(Base):
     active = Column(Boolean)
     avatar = Column(String)
     items = relationship('DbPost', back_populates='author')
+    user_comments = relationship('DbComment', back_populates='author_comment')
+    user_responses = relationship('DbResponse', back_populates='author_response')
 
 class DbPost(Base):
     __tablename__= 'posts'
@@ -31,8 +33,10 @@ class DbComment(Base):
     username = Column(String)
     timestamp = Column(DateTime)
     post_id = Column(Integer, ForeignKey('posts.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
     post = relationship('DbPost', back_populates='comments')
     responses = relationship('DbResponse', back_populates='comment')
+    author_comment = relationship('DbUser', back_populates='user_comments')
 
 class DbResponse(Base):
     __tablename__= 'responses'
@@ -42,4 +46,6 @@ class DbResponse(Base):
     edited = Column(Boolean)
     timestamp = Column(DateTime)
     comment_id = Column(Integer, ForeignKey('comments.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
     comment = relationship('DbComment', back_populates='responses')
+    author_response = relationship('DbUser', back_populates='user_responses')
