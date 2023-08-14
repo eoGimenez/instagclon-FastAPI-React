@@ -32,8 +32,10 @@ async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db),
 ):
-    
-    scopes = form_data.scopes[0].split(',')
+    if (len(form_data.scopes) == 1):
+        scopes = form_data.scopes[0].split(',')
+    if (len(form_data.scopes) == 2):
+        scopes = form_data.scopes
     user = db_auth.authenticate_user(
         form_data.username, form_data.password, db
     )

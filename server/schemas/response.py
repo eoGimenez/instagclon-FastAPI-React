@@ -7,15 +7,14 @@ class ResponseBase(BaseModel):
     username: str
     text: str
     comment_id: int
-    edited: Optional[bool] | None = False
+    author_id: int
 
 class ResponseDisplay(BaseModel):
     id: int
     text: str
     username: str
     edited: bool
-    author_id: int
-    author_response: User
     timestamp: datetime
+    author_response: User
     class Config():
         from_attributes = True

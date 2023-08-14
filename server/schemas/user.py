@@ -29,6 +29,7 @@ class User(BaseModel):
     id: int
     username: str
     avatar: str
+    active: bool
     class Config():
         from_attributes = True
 

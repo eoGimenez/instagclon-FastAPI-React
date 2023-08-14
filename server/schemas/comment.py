@@ -4,6 +4,8 @@ from typing import List
 from schemas.response import ResponseDisplay
 from schemas.user import User
 
+
+
 class CommentBase(BaseModel):
     username: str
     text: str
@@ -14,8 +16,8 @@ class CommentDisplay(BaseModel):
     id: int
     text: str
     username: str
+    timestamp: datetime
     responses: List[ResponseDisplay]
     author_comment: User
-    timestamp: datetime
     class Config():
         from_attributes = True

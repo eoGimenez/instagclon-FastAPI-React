@@ -4,13 +4,19 @@ from models.models import DbResponse
 from fastapi import HTTPException, status
 from datetime import datetime
 
+def get_all_responses(db:Session, comment_id: int):
+    return db.query(DbResponse).filter(DbResponse.comment_id == comment_id).all()
+
 def add_response(db: Session, request: ResponseBase):
     new_response = DbResponse(
         text = request.text,
         username = request.username,
         comment_id = request.comment_id,
+        user_id = request.author_id,
+        edited = False,
         timestamp = datetime.now()
     )
+    print(new_response)
     db.add(new_response)
     db.commit()
     db.refresh(new_response)
