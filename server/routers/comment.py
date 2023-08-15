@@ -20,3 +20,7 @@ async def add_comment(resquest: CommentBase, db: Session = Depends(get_db), toke
 @router.get('/{post_id}')
 async def get_comments(post_id: int, db: Session = Depends(get_db)):
     return db_comment.get_all_comments(db, post_id)
+
+@router.delete('/{comment_id}')
+async def delete_comment(comment_id: int, user_id: int, db:Session= Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
+    return db_comment.delete_selected_comment(db, comment_id, user_id)

@@ -36,8 +36,8 @@ def update_response(db:Session, id: int, request: ResponseBase):
     return 'Respuesta actualizada'
 
 def delete_response(db: Session, id: int, user_id: int):
-    response = db.query(DbResponse).filter(DbResponse.id == id)
-    if not response.first():
+    response = db.query(DbResponse).filter(DbResponse.id == id).first()
+    if not response:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                             detail='Esa respuesta no existe'
                             )
