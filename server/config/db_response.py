@@ -16,7 +16,6 @@ def add_response(db: Session, request: ResponseBase):
         edited = False,
         timestamp = datetime.now()
     )
-    print(new_response)
     db.add(new_response)
     db.commit()
     db.refresh(new_response)

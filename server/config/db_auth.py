@@ -73,7 +73,7 @@ async def get_current_user(
         if username is None:
             raise credentials_exception
         token_scopes = payload.get('scopes', [])
-        token_data = TokenData(id= id, scopes=token_scopes, usernam=username)
+        token_data = TokenData(id= id, scopes=token_scopes, username=username)
     except ( JWTError, ValidationError):
         raise credentials_exception
     user = db.query(DbUser).filter(DbUser.username == username).first()

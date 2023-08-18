@@ -10,5 +10,5 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Annotated[int, None]
-    usernam: Annotated[str, None]
+    username: Annotated[str, None]
     scopes: List[str] = []

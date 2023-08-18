@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, Security
+from fastapi import APIRouter, Depends, Security, HTTPException, status
 from sqlalchemy.orm.session import Session
 from config.database import get_db
 from config import db_response
-from schemas.response import ResponseDisplay, ResponseBase
+from schemas.response import ResponseBase
 from schemas.token import TokenData
 from config.db_auth import get_current_active_user
 
@@ -17,4 +17,7 @@ async def get_responses(comment_id: int, db:Session = Depends(get_db)):
 
 @router.post('/')
 async def create_response(request: ResponseBase, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
-    return db_response.add_response(db, request)
+    if (request.author_id == token.id and request.username == token.username):
+        return db_response.add_response(db, request)
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                        detail='Se produjo un error en la Base de datos, intentelo nuevamente.')

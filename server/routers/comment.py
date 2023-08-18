@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends, Security
 from sqlalchemy.orm.session import Session
 from config.database import get_db
 from config import db_comment
-from schemas.comment import CommentBase, CommentDisplay
+from schemas.comment import CommentBase
 from schemas.token import TokenData
 from config.db_auth import get_current_active_user
 
