@@ -21,7 +21,7 @@ def add_response(db: Session, request: ResponseBase):
     db.refresh(new_response)
     return new_response
 
-def update_response(db:Session, id: int, request: ResponseBase):
+def update_one_response(db:Session, id: int, request: ResponseBase):
     response = db.query(DbResponse).filter(DbResponse.id == id)
     if not response.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
@@ -34,7 +34,7 @@ def update_response(db:Session, id: int, request: ResponseBase):
     db.commit()
     return 'Respuesta actualizada'
 
-def delete_response(db: Session, id: int, user_id: int):
+def delete_one_response(db: Session, id: int, user_id: int):
     response = db.query(DbResponse).filter(DbResponse.id == id).first()
     if not response:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
