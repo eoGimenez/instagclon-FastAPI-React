@@ -1,6 +1,6 @@
 from sqlalchemy.orm.session import Session
 from sqlalchemy import or_
-from schemas.user import UserSignUp
+from schemas.user import UserSignUp, UserDisplay
 from models.models import DbUser
 from fastapi import HTTPException, status
 from config.db_auth import get_password_hashed
@@ -31,3 +31,14 @@ def get_user_by_id(db:Session, id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'User with id {id}, not found')
     return user
+
+def update_current_user(db: Session, id: int, request: UserDisplay):
+    user = db.query(DbUser).filter(DbUser.id == id)
+    if not user.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'User with id {id}, not found')
+    user.update({
+        DbUser.avatar: request.avatar
+    })
+    db.commit()
+    return 'Usuario actualizado correctamente'

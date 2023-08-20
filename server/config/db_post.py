@@ -31,3 +31,11 @@ def delete_post(db: Session, id: int, user_id: int):
     db.delete(post)
     db.commit()
     return 'El post fue eliminado correctamente.'
+
+def get_all_user_posts(db: Session, user_id: int):
+    posts = []
+    all_posts = db.query(DbPost).all()
+    for post in all_posts:
+        if post.author.id == user_id:
+            posts.append(post)
+    return posts
