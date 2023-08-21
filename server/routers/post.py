@@ -29,9 +29,9 @@ async def upload_file(image: UploadFile = File(...), token: TokenData = Security
         'public_id': upload_result['public_id'],
         'url': upload_result['secure_url']
     }
-@router.get('/user_posts')
-async def users_posts(db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post', 'me'])):
-    return db_post.get_all_user_posts(db, token.id)
+@router.get('/user_posts/{user_id}')
+async def users_posts(user_id: int, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post', 'me'])):
+    return db_post.get_all_user_posts(db, user_id)
 
 
 @router.get('/{id}', response_model=PostDisplay)
