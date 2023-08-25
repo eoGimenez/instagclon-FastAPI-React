@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Security, UploadFile, File
-from cloudinary.uploader import upload
+import cloudinary.uploader
+import cloudinary
 from sqlalchemy.orm.session import Session
 from schemas.post import PostBase, PostDisplay
 from config.database import get_db
@@ -24,7 +25,7 @@ async def get_posts(db: Session = Depends(get_db)):
 
 @router.post('/upload')
 async def upload_file(image: UploadFile = File(...), token: TokenData = Security(get_current_active_user, scopes=['post'])):
-    upload_result = upload(image.file)
+    upload_result = cloudinary.uploader.upload(image.file, transformation = {"width": 800, "height": 600})
     return {
         'public_id': upload_result['public_id'],
         'url': upload_result['secure_url']
