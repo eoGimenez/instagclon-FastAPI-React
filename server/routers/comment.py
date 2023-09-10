@@ -13,9 +13,15 @@ router = APIRouter(
 )
 
 
-@router.post('/')
+@router.post('/', response_model=List[CommentDisplay])
 async def add_comment(resquest: CommentBase, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
-    return db_comment.post_comment(db, resquest)
+    db_comment.post_comment(db, resquest)
+    lala = db_comment.get_all_comments(db, resquest.post_id)
+    for resp in lala:
+        if resp.responses:
+            for resp2 in resp.responses:
+                pass
+    return lala
 
 
 @router.get('/{post_id}', response_model=List[CommentDisplay])
