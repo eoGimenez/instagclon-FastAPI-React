@@ -2,9 +2,10 @@ from fastapi import APIRouter, HTTPException, status, Depends, Security
 from sqlalchemy.orm.session import Session
 from config.database import get_db
 from config import db_comment
-from schemas.comment import CommentBase
+from schemas.comment import CommentBase, CommentDisplay
 from schemas.token import TokenData
 from config.db_auth import get_current_active_user
+from typing import List
 
 router = APIRouter(
     prefix='/comment',
@@ -17,7 +18,7 @@ async def add_comment(resquest: CommentBase, db: Session = Depends(get_db), toke
     return db_comment.post_comment(db, resquest)
 
 
-@router.get('/{post_id}')
+@router.get('/{post_id}', response_model=List[CommentDisplay])
 async def get_comments(post_id: int, db: Session = Depends(get_db)):
     lala = db_comment.get_all_comments(db, post_id)
     for resp in lala:

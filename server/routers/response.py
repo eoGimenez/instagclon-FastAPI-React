@@ -2,16 +2,17 @@ from fastapi import APIRouter, Depends, Security, HTTPException, status
 from sqlalchemy.orm.session import Session
 from config.database import get_db
 from config import db_response
-from schemas.response import ResponseBase
+from schemas.response import ResponseBase, ResponseDisplay
 from schemas.token import TokenData
 from config.db_auth import get_current_active_user
+from typing import List
 
 router = APIRouter(
     prefix='/response',
     tags=['Responses']
 )
 
-@router.get('/{comment_id}')
+@router.get('/{comment_id}', response_model=List[ResponseDisplay])
 async def get_responses(comment_id: int, db:Session = Depends(get_db)):
     return db_response.get_all_responses(db, comment_id)
 
