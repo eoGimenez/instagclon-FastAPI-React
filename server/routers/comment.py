@@ -33,6 +33,10 @@ async def get_comments(post_id: int, db: Session = Depends(get_db)):
                 pass
     return lala
 
+@router.get('/onecomment/{comment_id}', response_model=CommentDisplay)
+async def get_one_comment(comment_id: int, db:Session = Depends(get_db)):
+    return db_comment.get_comment_by_id(db, comment_id)
+
 @router.delete('/{comment_id}')
 async def delete_comment(comment_id: int,  db:Session= Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
     return db_comment.delete_selected_comment(db, comment_id, token.id)

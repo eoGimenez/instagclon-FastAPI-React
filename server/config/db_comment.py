@@ -20,6 +20,9 @@ def post_comment(db: Session, request: CommentBase):
 def get_all_comments(db: Session, post_id: int):
     return db.query(DbComment).filter(DbComment.post_id == post_id).all()
 
+def get_comment_by_id(db: Session, id: int):
+    return db.query(DbComment).filter(DbComment.id == id).first()
+
 def delete_selected_comment(db:Session, id: int, user_id: int):
     comment = db.query(DbComment).filter(DbComment.id == id).first()
     if not comment:
