@@ -21,7 +21,7 @@ async def create_post(request: PostBase, db: Session = Depends(get_db), token: T
 
 
 @router.get('/', response_model=List[PostDisplay])
-async def get_posts(limit: int, db: Session = Depends(get_db)):
+async def get_posts(limit: int | None = 5, db: Session = Depends(get_db)):
     return db_post.get_all_post(db, limit)
 
 
