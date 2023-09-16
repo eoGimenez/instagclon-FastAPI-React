@@ -19,19 +19,49 @@ router = APIRouter(
     tags=['Authentication']
 )
 
-@router.post('/signup', response_model=UserDisplay)
+@router.post('/signup', response_model=UserDisplay, summary="Crea un nuevo usuario")
 async def create_user(request: UserSignUp, db: Session = Depends(get_db)):
+    """
+    Devolución de los datos del usuario a consumir en el front-end
+
+    - **id**: ID unico del usuario
+    - **username**: Nombre del usuario
+    - **email**: Email del usuario
+    - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+    """
     return post_user(db, request)
 
-@router.get('/{id}', response_model=UserDisplay)
+@router.get('/{id}', response_model=UserDisplay, summary="Devuelve busqueda de un Usuario por su ID")
 async def get_user(id: int, db: Session = Depends(get_db)):
+    """
+    Devolución de los datos del usuario a consumir en el front-end
+
+    - **id**: ID unico del usuario
+    - **username**: Nombre del usuario
+    - **email**: Email del usuario
+    - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+    """
     return get_user_by_id(db, id)
 
-@router.post('/token', response_model=Token)
+@router.post('/token', response_model=Token, summary="Devuelve el token de autenticación")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db),
 ):
+    """
+    Devolución del token de login
+
+    - **access_token**: Token sifrado
+    - **token_type**: Tipo de token
+    - **User** = {
+    
+        - **id**: ID unico del usuario
+        - **username**: Nombre del usuario
+        - **email**: Email del usuario
+        - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+
+    }
+    """
     if (len(form_data.scopes) == 1):
         scopes = form_data.scopes[0].split(',')
     if (len(form_data.scopes) == 2):
@@ -58,14 +88,37 @@ async def login_for_access_token(
     }
 
 
-@router.get("/users/me/", response_model=UserDisplay)
+@router.get("/users/me/", response_model=UserDisplay, summary="Comprueba validez del usuario")
 async def read_users_me(
     current_user: Annotated[UserBase, Depends(db_auth.get_current_active_user)]
 ):
+    """
+    Devolución de los datos del usuario a consumir en el front-end
+
+    - **id**: ID unico del usuario
+    - **username**: Nombre del usuario
+    - **email**: Email del usuario
+    - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+    """
     return current_user
 
-@router.get("/status/")
+@router.get("/status/", summary="Comprueba estado del usuario")
 async def read_system_status(current_user: Annotated[UserBase, Depends(db_auth.get_current_user)]):
+    """
+    Devolución completa del usuario
+
+    - **status**: Tipo de estado del usuario
+    - **Current user** = {
+    
+        - **id**: ID unico del usuario
+        - **username**: Nombre del usuario
+        - **email**: Email del usuario
+        - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+        - **password**: Contraseña enctriptada
+        - **active**: Estado de actividad del usuario
+
+    }
+    """
     return {
         "status": "ok",
         "current user": current_user

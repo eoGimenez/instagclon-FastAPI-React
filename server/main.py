@@ -13,7 +13,33 @@ originis = [
 ]
 
 
-app = FastAPI()
+app = FastAPI(
+    title="API Red Social",
+    description="API creada a modo educativo",
+    version="0.0.1",
+    openapi_tags=[
+        {
+            "name": "Authentication",
+            "description": "Rutas de autenticación"
+        },
+        {
+            "name": "Posts",
+            "description": "Rutas de Posts"
+        },
+        {
+            "name": "Comments",
+            "description": "Rutas de Comments"
+        },
+        {
+            "name": "Responses",
+            "description": "Rutas de Responses"
+        },
+        {
+            "name": "User",
+            "description": "Rutas de User"
+        }
+        ]
+)
 
 app.add_middleware(
     CORSMiddleware,
