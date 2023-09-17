@@ -13,8 +13,17 @@ router = APIRouter(
 )
 
 
-@router.post('/', response_model=List[CommentDisplay])
+@router.post('/', response_model=List[CommentDisplay], summary="Agrega un comentario a un post")
 async def add_comment(resquest: CommentBase, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
+    """
+    Agrega un comentario a un post existente
+
+    - **username**: Nombre del creador del comentario
+    - **text**: Texto del comentario
+    - **post_id**: ID unico de post a comentar
+"author_id": 0
+    
+    """
     db_comment.post_comment(db, resquest)
     lala = db_comment.get_all_comments(db, resquest.post_id)
     for resp in lala:
