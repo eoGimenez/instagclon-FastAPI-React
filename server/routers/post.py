@@ -15,8 +15,59 @@ router = APIRouter(
 )
 
 
-@router.post('/', response_model=PostDisplay)
+@router.post('/', response_model=PostDisplay,summary="Crea nuevo Post")
 async def create_post(request: PostBase, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
+    """
+    Devuelve el post creado
+
+    - **id**: ID unico del post
+    - **image_url**: URL de la imagen del post
+    - **caption**: Comentario del post
+    - **timestamp**: Horario de creación del post
+    - **author**: {
+        - **id**: ID unico del usuario
+        - **username**: Nombre del usuario
+        - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+        - **actie**: Estado del usuario
+
+            }
+    - **comments**: [
+        {
+        - **id**: ID unico del comentario
+        - **text**: Texto del comentario
+        - **username**: Nombre del creador del comentario
+        - **timestamp**: Horario de creacion del comentario
+        - **responses**: [
+            {
+            - **id**: ID unico de la respuesta,
+            - **text**: Texto de la respuesta
+            - **username**: Nombre del creador de la respuesta
+            - **edited**: Refleja si la respuesta fue editada,
+            - **timestamp**: Horario de creacion de la respuesta
+            - **author_response**: {
+                - **id**: ID unico del usuario
+                - **username**: Nombre del usuario
+                - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+                - **actie**: Estado del usuario
+
+                }
+
+            }
+
+        ]
+        - **author_comment**: {
+            - **id**: ID unico del usuario que creo el comentario
+            - **username**: Nombre del usuario
+            - **avatar**: Al crear se le asigna un Avatar generico, luego puede actualizarse en el front-end
+            - **actie**: Estado del usuario
+
+                }
+
+        }
+
+    ]
+
+    """
     return db_post.post_post(db, request)
 
 

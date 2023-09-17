@@ -15,7 +15,15 @@ originis = [
 
 app = FastAPI(
     title="API Red Social",
-    description="API creada a modo educativo",
+    description="""
+    En esta API encontrarás los endpoints del ejercicio para simular una red social al estilo de Instagram.
+
+    Ten en cuenta que utilizando el Swagger, los SCOPES pueden asignarse manualmente. 
+    Cuando te autentiques, las últimas opciones son los SCOPES y para poder usar muchos 
+    endpoints, debes utilizar los scopes correctos. 
+    ESTAS OPCIONES ESTÁN HABILITADAS A MODO EDUCATIVO. 
+    En el consumo de la API, está contemplada la asignación de SCOPES automáticamente.
+    """,
     version="0.0.1",
     openapi_tags=[
         {
