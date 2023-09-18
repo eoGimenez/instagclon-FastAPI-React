@@ -10,6 +10,7 @@ def post_comment(db: Session, request: CommentBase):
         username= request.username,
         post_id = request.post_id,
         user_id = request.author_id,
+        edited = False,
         timestamp = datetime.now()
     )
     db.add(new_comment)
@@ -22,6 +23,20 @@ def get_all_comments(db: Session, post_id: int):
 
 def get_comment_by_id(db: Session, id: int):
     return db.query(DbComment).filter(DbComment.id == id).first()
+
+def update_one_comment(db: Session, id: int, request: CommentBase):
+    response = db.query(DbComment).filter(DbComment.id == id)
+    if not response.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Ese comentario no existe"
+                            )
+
+    response.update({
+        DbComment.text: request.text,
+        DbComment.edited: True
+    })
+    db.commit()
+    return 'Comentario actualizado'
 
 def delete_selected_comment(db:Session, id: int, user_id: int):
     comment = db.query(DbComment).filter(DbComment.id == id).first()

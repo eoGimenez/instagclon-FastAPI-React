@@ -16,6 +16,7 @@ class CommentDisplay(BaseModel):
     id: int
     text: str
     username: str
+    edited: bool
     timestamp: datetime
     responses: List[ResponseDisplay]
     author_comment: User

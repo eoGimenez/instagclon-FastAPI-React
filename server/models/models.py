@@ -31,6 +31,7 @@ class DbComment(Base):
     id = Column(Integer, primary_key=True, index=True)
     text = Column(String)
     username = Column(String)
+    edited = Column(Boolean)
     timestamp = Column(DateTime)
     post_id = Column(Integer, ForeignKey('posts.id'))
     user_id = Column(Integer, ForeignKey('users.id'))

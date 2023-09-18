@@ -58,6 +58,23 @@ async def get_one_comment(comment_id: int, db:Session = Depends(get_db)):
     """
     return db_comment.get_comment_by_id(db, comment_id)
 
+@router.put('/{comment_id}',response_model=CommentDisplay, summary="Actualiza contenido del comentario")
+async def update_comment(comment_id: int, request: CommentBase, db: Session = Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
+    """
+    **¡¡REQUIERE ESTAR AUTENTICADO Y SER EL AUTOR DEL COMENTARIO!!**
+
+    Actualiza un comentario por su ID
+
+    - **comment_id**: ID del comentario a actualizar
+    - **formulario**: Formulario para editar el comentario
+
+    """
+    if (request.author_id == token.id and request.username == token.username):
+        return db_comment.update_one_comment(db, comment_id, request)
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                        detail='Se produjo un error en la Base de datos, intentelo nuevamente'
+                        )
+
 @router.delete('/{comment_id}', summary="Elimina un comentario por su ID")
 async def delete_comment(comment_id: int,  db:Session= Depends(get_db), token: TokenData = Security(get_current_active_user, scopes=['post'])):
     """
