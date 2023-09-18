@@ -32,7 +32,7 @@ def update_one_response(db:Session, id: int, request: ResponseBase):
         DbResponse.edited: True
     })
     db.commit()
-    return 'Respuesta actualizada'
+    return response.first()
 
 def delete_one_response(db: Session, id: int, user_id: int):
     response = db.query(DbResponse).filter(DbResponse.id == id).first()

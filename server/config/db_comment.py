@@ -36,7 +36,7 @@ def update_one_comment(db: Session, id: int, request: CommentBase):
         DbComment.edited: True
     })
     db.commit()
-    return 'Comentario actualizado'
+    return response.first()
 
 def delete_selected_comment(db:Session, id: int, user_id: int):
     comment = db.query(DbComment).filter(DbComment.id == id).first()
