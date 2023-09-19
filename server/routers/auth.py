@@ -93,6 +93,8 @@ async def read_users_me(
     current_user: Annotated[UserBase, Depends(db_auth.get_current_active_user)]
 ):
     """
+    **¡¡REQUIERE ESTAR AUTENTICADO!!**
+
     Devolución de los datos del usuario a consumir en el front-end
 
     - **id**: ID unico del usuario
@@ -105,6 +107,8 @@ async def read_users_me(
 @router.get("/status/", summary="Comprueba estado del usuario")
 async def read_system_status(current_user: Annotated[UserBase, Depends(db_auth.get_current_user)]):
     """
+    **¡¡REQUIERE ESTAR AUTENTICADO!!**
+
     Devolución completa del usuario
 
     - **status**: Tipo de estado del usuario

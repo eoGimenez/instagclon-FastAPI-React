@@ -7,11 +7,11 @@ from datetime import datetime
 def get_all_responses(db:Session, comment_id: int):
     return db.query(DbResponse).filter(DbResponse.comment_id == comment_id).all()
 
-def add_response(db: Session, request: ResponseBase):
+def add_response(db: Session, comment_id: int, request: ResponseBase):
     new_response = DbResponse(
         text = request.text,
         username = request.username,
-        comment_id = request.comment_id,
+        comment_id = comment_id,
         user_id = request.author_id,
         edited = False,
         timestamp = datetime.now()

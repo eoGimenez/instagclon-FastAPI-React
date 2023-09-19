@@ -6,14 +6,14 @@ class UserBase(BaseModel):
     username: str
     email: str
     password:str
-    avatar: Optional[str] | None = None
+    avatar: Optional[str]
 
 class UserSignUp(BaseModel):
     username: str
     email: str
     password:str
     re_password:str
-    avatar: Optional[str] | None = None
+    avatar: Optional[str]
     
 
 class UserDisplay(BaseModel):

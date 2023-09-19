@@ -9,6 +9,11 @@ class ResponseBase(BaseModel):
     comment_id: int
     author_id: int
 
+class ResponsePost(BaseModel):
+    username: str
+    text: str
+    author_id: int
+
 class ResponseDisplay(BaseModel):
     id: int
     text: str
