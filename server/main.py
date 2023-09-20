@@ -3,14 +3,17 @@ from routers import auth, post, comment, response, user
 from models.models import Base
 from config.database import engine
 from fastapi.middleware.cors import CORSMiddleware
+from enviroment.config import Settings, get_settings
 
 
-originis = [
+""" originis = [
     "http://localhost:3000",
     "http://localhost",
     "https://localhost:3000",
     "http://0.0.0.0:3000"
-]
+] """
+
+dotenv : Settings = get_settings()
 
 
 app = FastAPI(
@@ -51,7 +54,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins= originis,
+    allow_origins= [dotenv.ORIGIN],
     allow_credentials=True,
     allow_methods=['GET', 'POST', 'PUT', 'DELETE'],
     allow_headers=["*"],

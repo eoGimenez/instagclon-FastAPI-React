@@ -1,3 +1,4 @@
+import os
 from fastapi import Depends, HTTPException, Security, status
 from typing_extensions import Annotated
 from typing import Optional
@@ -15,6 +16,7 @@ from pydantic import ValidationError
 from schemas.user import UserBase, UserToken
 from schemas.token import TokenData
 from config.database import get_db
+
 
 dotenv : Settings = get_settings()
 
