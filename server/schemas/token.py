@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import List, Annotated
+from typing import List
+from typing_extensions import Optional
 from schemas.user import UserDisplay
 
 class Token(BaseModel):
@@ -9,6 +10,6 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    id: Annotated[int, None]
-    username: Annotated[str, None]
+    id: Optional[int]
+    username: Optional[str]
     scopes: List[str] = []

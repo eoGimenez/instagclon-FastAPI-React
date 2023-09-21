@@ -4,9 +4,10 @@ from fastapi import Depends
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import cloudinary
-from enviroment.config import Settings, get_settings
+# from enviroment.config import Settings, get_settings
 
-dotenv : Settings = Depends(get_settings)
+# dotenv : Settings = Depends(get_settings)
+
 CLOUDNAME = os.environ.get('CLOUDNAME')
 CLOUDKEY = os.environ.get('CLOUDKEY')
 CLOUDSECRET = os.environ.get('CLOUDSECRET')

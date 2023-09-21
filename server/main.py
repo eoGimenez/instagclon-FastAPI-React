@@ -1,9 +1,10 @@
+import os
 from fastapi import FastAPI
 from routers import auth, post, comment, response, user
 from models.models import Base
 from config.database import engine
 from fastapi.middleware.cors import CORSMiddleware
-from enviroment.config import Settings, get_settings
+# from enviroment.config import Settings, get_settings
 
 
 """ originis = [
@@ -13,8 +14,8 @@ from enviroment.config import Settings, get_settings
     "http://0.0.0.0:3000"
 ] """
 
-dotenv : Settings = get_settings()
-
+# dotenv : Settings = get_settings()
+ORIGIN = os.environ.get('ORIGIN')
 
 app = FastAPI(
     title="API Red Social",
@@ -54,7 +55,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins= [dotenv.ORIGIN],
+    allow_origins= [ORIGIN],
     allow_credentials=True,
     allow_methods=['GET', 'POST', 'PUT', 'DELETE'],
     allow_headers=["*"],

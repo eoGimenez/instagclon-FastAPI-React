@@ -2,7 +2,7 @@ import os
 from fastapi import Depends, HTTPException, Security, status
 from typing_extensions import Annotated
 from typing import Optional
-from enviroment.config import Settings, get_settings
+# from enviroment.config import Settings, get_settings
 from datetime import datetime, timedelta
 from sqlalchemy.orm.session import Session
 from fastapi.security import (
@@ -18,7 +18,10 @@ from schemas.token import TokenData
 from config.database import get_db
 
 
-dotenv : Settings = get_settings()
+# dotenv : Settings = get_settings()
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+ALGORITHM = os.environ.get('ALGORITHM')
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -50,7 +53,7 @@ def create_access_token(data: dict, expires_delta: Annotated[timedelta, None]):
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_enconde.update({'exp': expire})
-    encode_jwt = jwt.encode(to_enconde, dotenv.SECRET_KEY, algorithm=dotenv.ALGORITHM)
+    encode_jwt = jwt.encode(to_enconde, SECRET_KEY, algorithm=ALGORITHM)
     return encode_jwt
     
 
@@ -69,7 +72,7 @@ async def get_current_user(
         headers={'WWW-Authenticate': authenticate_value}
     )
     try:
-        payload = jwt.decode(token, dotenv.SECRET_KEY, algorithms=[dotenv.ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get('sub')
         id: int = payload.get('id')
         if username is None:
