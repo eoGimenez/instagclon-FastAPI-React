@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import create_engine
-from fastapi import Depends
+# from fastapi import Depends
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import cloudinary
@@ -32,6 +32,7 @@ cloudinary.config(
 )
 
 Base = declarative_base()
+
 
 def get_db():
     db = SessionLocal()
