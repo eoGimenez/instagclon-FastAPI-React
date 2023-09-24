@@ -16,6 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # dotenv : Settings = get_settings()
 ORIGIN = os.environ.get('ORIGIN')
+ORIGIN_ONLINE = os.environ.get('ORIGIN_ONLINE')
 
 app = FastAPI(
     title="API Red Social",
@@ -55,7 +56,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins= [ORIGIN],
+    allow_origins= [ORIGIN, ORIGIN_ONLINE],
     allow_credentials=True,
     allow_methods=['GET', 'POST', 'PUT', 'DELETE'],
     allow_headers=["*"],
